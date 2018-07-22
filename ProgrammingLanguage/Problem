@@ -1,0 +1,21 @@
+test case -> 23"rayhan \"hamada\"\""
+
+ketika di run pada [-2], karakter "\" tidak dianggap bagian dari string (karakter literal) [x]
+
+--------
+
+ubah cara kerja string dari string literal jadi string raw
+
+solusi -> string.replace("\\", "")
+
+
+-----------22 juli 2018
+-[2272018A] evaluator string0 dan string1 gagal mengevaluasi "rayhan \"hamada\"\"
+ output yang diharapkan -> "INV_STRING:rayhan \\"hamada\\"\\""
+
+-[2272018A-Solved] solved dengan memakai evaluator string1, dengan resiko tokenizer
+ tidak dapat mengklasifikasi token yang diharapkan menjadi string, sampai
+ tokenizer menemukan karakter " akhir(bukan " literal).
+
+- [2272018B] tokenizer tidak dapat mengklasifikasi token yang belum dikelompokkan.
+

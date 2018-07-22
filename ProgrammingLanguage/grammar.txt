@@ -1,0 +1,36 @@
+sintaks umum (just brainstorming )  :)
+contoh dengan kelas:
+
+
+    //<komentar_atau_dokumentasi>//
+    kelas <identifier_kelas> mewarisi <identifier_kelas_atas> {
+
+        //deklarasi dan inisiasi variabel//
+
+        <identifier_variabel> sebagai <tipe_data> <?static> <tipe_akses>;
+        angkaContoh sebagai Float Statis Privat;
+        angkaVariabel sebagai Integer Privat;
+        angkaVariabel2 sebagai Integer Privat;
+        Integer Konstan ANGKA_KONSTAN = 12350;
+
+        //konstruktor kelas sekaligus menugaskan masing-masing parameter ke variabel instansi dari kelas //
+
+        <identifier_kelas>(<parameter1>, angka_param, angka_param2,...)
+         tugaskan angka_param ke angkaVariabel, angka_param2 ke angkaVariabel2
+        {
+            cetak("objek dari kelas ini terbentuk");
+        }
+
+        fungsi <tipe_data> <?statis> <tipe_akses> ambilVariabel() {
+
+
+        }
+    }
+
+contoh ril:
+
+    kelas Kendaraan {
+
+
+
+    }
