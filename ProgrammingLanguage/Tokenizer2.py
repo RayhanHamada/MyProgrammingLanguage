@@ -3,15 +3,12 @@ import re
 pat_alp = re.compile("[A-Za-z]")#[chr(x) for x in range(97,123)]+[chr(x).upper() for x in range(97,123)]
 pat_al_ident_start = re.compile("[A-Za-z_]")
 pat_opa = re.compile(r"[-\+\*/%]")
+pat_opl = re.compile(r"[!\|&]")
 pat_angka = re.compile("[0-9]") # angka
 pat_allowed_ident = re.compile("[A-Za-z0-9_]")
-#pat_unused_punc = re.compile("[\s]")
-list_operator_a= ["+", "*", "-", "/", "%"] #operator aritmatik
 list_operator_rel = ["<", "=", "!", ">", "="] #operator relasi/perbandingan
 list_operator_log = ["!!", "||", "&&"] #operator logika
 keyword = ['cetak', 'kelas']
-
-
 
 
 def tokenizing(str_):
@@ -38,16 +35,11 @@ def tokenizing(str_):
         t = str_[i]
         current_token+=t
 
-        #evaluasi identifier dan keyword
+
         for j in range(1):
 
-            if current_token == "":
-                pass
-
-            # elif re.match("\n", current_token) and str_zone == False:
-            #     token.append(current_token)
-
-            elif re.match(r"\s",current_token) and str_zone == False:
+            # evaluasi identifier dan keyword
+            if re.match(r"\s",current_token) and str_zone == False:
                 current_token = ""
                 if num_zone == True and temp_num != "":
                     token.append("NUM:"+ temp_num)
@@ -66,6 +58,11 @@ def tokenizing(str_):
                     token.append("OP_A:"+temp_opa)
                     temp_opa = ""
                     opa_zone = False
+
+                if opl_zone == True and temp_opl != "":
+                    token.append("UNK_SYM:"+temp_opl)
+                    temp_opl = ""
+                    opl_zone = False
 
 
 
@@ -126,10 +123,26 @@ def tokenizing(str_):
 
 
                 #evaluasi identifier
-                if re.match(pat_al_ident_start,current_token) and ident_zone == False:
+                if re.match(pat_al_ident_start,current_token):
                     temp_ident+=current_token
                     ident_zone = True
                     current_token = ""
+
+                # evaluator operator logika
+                if re.match(pat_opl, current_token):
+                    temp_opl+=current_token
+                    opl_zone = True
+                    current_token = ""
+
+
+                if not(re.match(pat_opl,current_token) or re.match(pat_opa,current_token) or re.match(pat_allowed_ident, current_token)) and current_token != "":
+                    token.append("UNK_SYM:"+current_token)
+                    current_token = ""
+
+
+
+
+
 
 
 
@@ -182,23 +195,66 @@ def tokenizing(str_):
                 temp_opa = ""
                 opa_zone = False
 
-                if re.match(r"\"", current_token) and str_zone == False:
+                if re.match(r"\"", current_token):
                     current_token = ""
                     str_zone = True
 
+                if re.match(pat_angka,current_token):
+                    temp_num += current_token
+                    current_token = ""
+                    num_zone = True
 
-            # evaluasi operator logika
 
-            # elif re.match("[!&|]") and num_zone == False and str_zone == False and opr_zone == False and opl_zone == False and opa_zone == False and ident_zone == False:
-            #     opl_zone = True
+
+            # evaluator operator logika
+            elif re.match(pat_opl, current_token) and num_zone == False and str_zone == False and opr_zone == False and opl_zone == False and opa_zone == False and ident_zone == False:
+                temp_opl+=current_token
+                current_token = ""
+                opl_zone = True
+
+            elif re.match(pat_opl, current_token) and num_zone == False and str_zone == False and opr_zone == False and opl_zone == True and opa_zone == False and ident_zone == False:
+                temp_opl+=current_token
+                if re.match("(!!|\|\||&&)", temp_opl):
+                    token.append("OP_L:"+temp_opl)
+                else:
+                    token.append("UNK_SYM:"+temp_opl)
+                temp_opl = ""
+                current_token = ""
+                opl_zone = False
+
+            elif not re.match(pat_opl, current_token) and num_zone == False and str_zone == False and opr_zone == False and opl_zone == True and opa_zone == False and ident_zone == False:
+                token.append("UNK_SYM:"+temp_opl)
+                temp_opl = ""
+                opl_zone = False
+
+                if re.match(r"\"", current_token):
+                    current_token = ""
+                    str_zone = True
+
+                if re.match(pat_angka,current_token):
+                    temp_num += current_token
+                    current_token = ""
+                    num_zone = True
+
+                if not(re.match(pat_opl,current_token) or re.match(pat_opa,current_token) or re.match(pat_allowed_ident, current_token)) and current_token != "":
+                    token.append("UNK_SYM:"+current_token)
+                    current_token = ""
+
+
+
+            # evaluator simbol yang belum di klasifikasi
+            elif (not (re.match(pat_allowed_ident, current_token) or re.match(pat_opa, current_token))) and current_token != " " and str_zone == False:
+                token.append("UNK_SYM:"+ current_token)
+                current_token = ""
+
+
+
 
 
 
 
 
     print(token)
-    print(temp_string)
-    print(str_zone)
 
 
 

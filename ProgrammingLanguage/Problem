@@ -9,13 +9,18 @@ ubah cara kerja string dari string literal jadi string raw
 solusi -> string.replace("\\", "")
 
 
------------22 juli 2018
--[2272018A] evaluator string0 dan string1 gagal mengevaluasi "rayhan \"hamada\"\"
+----------25 juli 2018
+-[2572018A] evaluator string0 dan string1 gagal mengevaluasi "rayhan \"hamada\"\"
  output yang diharapkan -> "INV_STRING:rayhan \\"hamada\\"\\""
 
--[2272018A-Solved] solved dengan memakai evaluator string1, dengan resiko tokenizer
+-[2572018A-solved] solved dengan memakai evaluator string1, dengan resiko tokenizer
  tidak dapat mengklasifikasi token yang diharapkan menjadi string, sampai
  tokenizer menemukan karakter " akhir(bukan " literal).
 
-- [2272018B] tokenizer tidak dapat mengklasifikasi token yang belum dikelompokkan.
+-----------26 juli 2018
+- [2672018B] tokenizer tidak dapat mengklasifikasi token yang belum dikelompokkan.
+- [2672018B-solved] tokenizer dapat mengklasifikasi token yang belum dikelompokkan
+
+-[2672018B-add] evaluator operator logika dibuat
+
 

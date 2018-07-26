@@ -1,5 +1,5 @@
 import re
 
 
-abc = "rayhan hamada"
+exec("print(\"hello\")")
 
