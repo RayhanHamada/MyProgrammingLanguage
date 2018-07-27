@@ -1,9 +1,10 @@
 import re
 
-pat_alp = re.compile("[A-Za-z]")#[chr(x) for x in range(97,123)]+[chr(x).upper() for x in range(97,123)]
+pat_alp = re.compile("[A-Za-z]")
 pat_al_ident_start = re.compile("[A-Za-z_]")
 pat_opa = re.compile(r"[-\+\*/%]")
 pat_opl = re.compile(r"[!\|&]")
+pat_opr = re.compile(r"[<=>!]")
 pat_angka = re.compile("[0-9]") # angka
 pat_allowed_ident = re.compile("[A-Za-z0-9_]")
 list_operator_rel = ["<", "=", "!", ">", "="] #operator relasi/perbandingan
@@ -35,7 +36,6 @@ def tokenizing(str_):
         t = str_[i]
         current_token+=t
 
-
         for j in range(1):
 
             # evaluasi identifier dan keyword
@@ -63,7 +63,6 @@ def tokenizing(str_):
                     token.append("UNK_SYM:"+temp_opl)
                     temp_opl = ""
                     opl_zone = False
-
 
 
             elif re.match(r"\n", current_token) and str_zone == False:
@@ -140,12 +139,6 @@ def tokenizing(str_):
                     current_token = ""
 
 
-
-
-
-
-
-
             #evaluator string1
 
             elif re.match(r"\"", current_token) and num_zone == False and str_zone == False and opr_zone == False and opl_zone == False and opa_zone == False and ident_zone == False:
@@ -172,20 +165,19 @@ def tokenizing(str_):
                 str_zone = False
 
 
-
-            # elif re.match("[^\\\"]",current_token) and str_zone == True:
-            #     temp_string+=current_token
-            #     current_token = ""
-
             #evaluasi operator aritmatika
             elif re.match(pat_opa, current_token) and num_zone == False and str_zone == False and opr_zone == False and opl_zone == False and opa_zone == False and ident_zone == False:
                 temp_opa+=current_token
                 current_token = ""
                 opa_zone = True
 
-            elif re.match(pat_opa, current_token) and num_zone == False and str_zone == False and opr_zone == False and opl_zone == False and opa_zone == True and ident_zone == False:
+            elif re.match(r"[=\+\-]", current_token) and num_zone == False and str_zone == False and opr_zone == False and opl_zone == False and opa_zone == True and ident_zone == False:
                 temp_opa+=current_token
-                token.append("OP_A:"+temp_opa)
+                #token.append("OP_A:"+temp_opa)
+                if re.match(r"(\+\+|--|\+=|-=|\*=|/=)",temp_opa):
+                    token.append("OP_A:"+temp_opa)
+                else:
+                    token.append("UNK_SYM:"+temp_opa)
                 temp_opa = ""
                 current_token = ""
                 opa_zone = False
@@ -204,6 +196,9 @@ def tokenizing(str_):
                     current_token = ""
                     num_zone = True
 
+                if not(re.match(pat_opl,current_token) or re.match(pat_opa,current_token) or re.match(pat_allowed_ident, current_token)) and current_token != "":
+                    token.append("UNK_SYM:"+current_token)
+                    current_token = ""
 
 
             # evaluator operator logika
@@ -236,23 +231,23 @@ def tokenizing(str_):
                     current_token = ""
                     num_zone = True
 
+                if re.match(pat_opa,current_token):
+                    temp_opa += current_token
+                    current_token = ""
+                    opa_zone = True
+
                 if not(re.match(pat_opl,current_token) or re.match(pat_opa,current_token) or re.match(pat_allowed_ident, current_token)) and current_token != "":
                     token.append("UNK_SYM:"+current_token)
                     current_token = ""
 
+            # evaluator operator perbandingan
 
+            # elif re.match()
 
             # evaluator simbol yang belum di klasifikasi
             elif (not (re.match(pat_allowed_ident, current_token) or re.match(pat_opa, current_token))) and current_token != " " and str_zone == False:
                 token.append("UNK_SYM:"+ current_token)
                 current_token = ""
-
-
-
-
-
-
-
 
     print(token)
 
