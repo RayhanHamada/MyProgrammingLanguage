@@ -20,7 +20,9 @@ solusi -> string.replace("\\", "")
 -----------26 juli 2018
 - [2672018B] tokenizer tidak dapat mengklasifikasi token yang belum dikelompokkan.
 - [2672018B-solved] tokenizer dapat mengklasifikasi token yang belum dikelompokkan
-
--[2672018B-add] evaluator operator logika dibuat
+-----------27 juli 2018
+-[2772018B-add] evaluator operator logika dibuat
+-----------31 juli 2018
+-[3172018-add] evaluator operator relasi dibuat
 
 
