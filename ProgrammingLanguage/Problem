@@ -18,11 +18,15 @@ solusi -> string.replace("\\", "")
  tokenizer menemukan karakter " akhir(bukan " literal).
 
 -----------26 juli 2018
-- [2672018B] tokenizer tidak dapat mengklasifikasi token yang belum dikelompokkan.
-- [2672018B-solved] tokenizer dapat mengklasifikasi token yang belum dikelompokkan
+-[2672018B] tokenizer tidak dapat mengklasifikasi token yang belum dikelompokkan.
+-[2672018B-solved] tokenizer dapat mengklasifikasi token yang belum dikelompokkan.
 -----------27 juli 2018
--[2772018B-add] evaluator operator logika dibuat
+-[2772018B-add] evaluator operator logika dibuat.
 -----------31 juli 2018
--[3172018-add] evaluator operator relasi dibuat
+-[3172018-add] evaluator operator relasi dibuat.
 
+-----------1 agustus 2018
+-[0182018-ev] prototip tokenizer selesai.
+-----------2 agustus 2018
+-[0282018-add] tokenizer di perbaiki dan evaluator separator di tambahkan
 
