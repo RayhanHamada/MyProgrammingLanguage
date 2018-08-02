@@ -29,4 +29,5 @@ solusi -> string.replace("\\", "")
 -[0182018-ev] prototip tokenizer selesai.
 -----------2 agustus 2018
 -[0282018-add] tokenizer di perbaiki dan evaluator separator di tambahkan
+-[0282018-add] output tokenizer di ubah menjadi berbentuk tuple : (<tipe_token>, <symbol>)
 
