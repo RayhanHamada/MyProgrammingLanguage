@@ -38,14 +38,17 @@ def tokenizing(str_):
 
         for j in range(1):
 
-            # evaluasi identifier dan keyword
+            # evaluasi spasi
             if re.match(r"\s",current_token) and str_zone == False:
                 current_token = ""
+
+                # evaluasi angka
                 if num_zone == True and temp_num != "":
                     token.append(("NUM", temp_num))
                     temp_num = ""
                     num_zone = False
 
+                #evaluasi identifier
                 if ident_zone == True and temp_ident != "":
                     if temp_ident in keyword:
                         token.append(("KEYW", temp_ident))
@@ -54,11 +57,13 @@ def tokenizing(str_):
                     temp_ident = ""
                     ident_zone = False
 
+                # evaluasi operator aritmatik
                 if opa_zone == True and temp_opa != "":
                     token.append(("OP_A", temp_opa))
                     temp_opa = ""
                     opa_zone = False
 
+                # evaluasi operator logika
                 if opl_zone == True and temp_opl != "":
                     if re.match(r"!", temp_opl):
                         token.append(("OP_L", temp_opl))
@@ -67,6 +72,7 @@ def tokenizing(str_):
                     temp_opl = ""
                     opl_zone = False
 
+                # evaluasi operator relasi
                 if opr_zone == True and temp_opr != "":
                     if re.match(r"(<|>)", temp_opr):
                         token.append(("OP_R", temp_opr))
@@ -75,6 +81,7 @@ def tokenizing(str_):
                     temp_opr = ""
                     opr_zone = False
 
+            # evaluasi baris baru
             elif re.match(r"\n", current_token) and str_zone == False:
                 token.append("PUNC:"+current_token)
                 current_token = ""
@@ -97,24 +104,25 @@ def tokenizing(str_):
                 temp_ident = ""
                 ident_zone = False
 
-                # valuasi operator aritmatik
+                # evaluasi operator aritmatik
                 if re.match(r"[\*\+-/]", current_token):
                     temp_opa+=current_token
                     current_token = ""
                     opa_zone = True
 
-                #evaluasi operator logika
+                # evaluasi operator logika
                 if re.match(pat_opl, current_token):
                     temp_opl += current_token
                     current_token = ""
                     opl_zone = True
 
-                #evaluasi operator relasi
+                # evaluasi operator relasi
                 if re.match(pat_opr,current_token):
                     temp_opr += current_token
                     current_token = ""
                     opr_zone = True
 
+                 # evaluasi punctuasi
                 if re.match(pat_punc, current_token):
                     token.append(("PUNC", current_token))
                     current_token = ""
@@ -135,18 +143,18 @@ def tokenizing(str_):
                 temp_num = ""
                 num_zone = False
 
-                #evaluasi string
+                # evaluasi string
                 if re.match(r"\"", current_token) and str_zone == False:
                     current_token = ""
                     str_zone = True
 
-                #evaluasi operator aritmatik
+                # evaluasi operator aritmatik
                 if re.match(pat_opa, current_token) and num_zone == False and str_zone == False and opr_zone == False and opl_zone == False and opa_zone == False and ident_zone == False:
                     temp_opa += current_token
                     current_token = ""
                     opa_zone = True
 
-                #evaluasi identifier
+                # evaluasi identifier
                 if re.match(pat_al_ident_start,current_token):
                     temp_ident+=current_token
                     ident_zone = True
@@ -158,20 +166,23 @@ def tokenizing(str_):
                     opl_zone = True
                     current_token = ""
 
+                # evaluasi punctuasi
                 if re.match(pat_punc, current_token):
                     token.append(("PUNC", current_token))
                     current_token = ""
 
+                # evaluasi operator relasi
                 if re.match(pat_opr, current_token):
                     temp_opr += current_token
                     current_token = ""
                     opr_zone = True
 
+                # evaluasi simbol tidak terklasifikasi
                 if (not (re.match(pat_allowed_ident, current_token) or re.match(pat_opa, current_token) or re.match(pat_opl, current_token) or re.match(pat_opr, current_token) or re.match(pat_punc,current_token))) and current_token != " " and current_token != "":
                     token.append(("UNK_SYM", current_token))
                     current_token = ""
 
-            #evaluator string
+            # evaluasi string
             elif re.match(r"\"", current_token) and num_zone == False and str_zone == False and opr_zone == False and opl_zone == False and opa_zone == False and ident_zone == False:
                 current_token = ""
                 str_zone = True
@@ -195,7 +206,7 @@ def tokenizing(str_):
                 current_token = ""
                 str_zone = False
 
-            #evaluasi operator aritmatika
+            # evaluasi operator aritmatika
             elif re.match(pat_opa, current_token) and num_zone == False and str_zone == False and opr_zone == False and opl_zone == False and opa_zone == False and ident_zone == False:
                 temp_opa+=current_token
                 current_token = ""
@@ -216,34 +227,41 @@ def tokenizing(str_):
                 temp_opa = ""
                 opa_zone = False
 
+                # evaluasi string
                 if re.match(r"\"", current_token):
                     current_token = ""
                     str_zone = True
 
+                # evaluasi identifier
                 if re.match(pat_al_ident_start,current_token):
                     temp_ident+=current_token
                     ident_zone = True
                     current_token = ""
 
+                # evaluasi angka
                 if re.match(pat_angka,current_token):
                     temp_num += current_token
                     current_token = ""
                     num_zone = True
 
+                # evaluasi punctuasi
                 if re.match(pat_punc, current_token):
                     token.append(("PUNC", current_token))
                     current_token = ""
 
+                # evaluasi operator logika
                 if re.match(pat_opl, current_token):
                     temp_opl += current_token
                     current_token = ""
                     opl_zone = True
 
+                # evaluasi operator relasi
                 if re.match(pat_opr,current_token):
                     temp_opr += current_token
                     current_token = ""
                     opr_zone = True
 
+                # evaluasi simbol tidak terklasifikasi
                 if (not (re.match(pat_allowed_ident, current_token) or re.match(pat_opa, current_token) or re.match(pat_opl, current_token) or re.match(pat_opr, current_token) or re.match(pat_punc,current_token))) and current_token != " " and current_token != "":
                     token.append(("UNK_SYM", current_token))
                     current_token = ""
@@ -256,6 +274,7 @@ def tokenizing(str_):
 
             elif re.match(pat_opl, current_token) and num_zone == False and str_zone == False and opr_zone == False and opl_zone == True and opa_zone == False and ident_zone == False:
 
+                # evaluasi operator logika khusus !
                 if re.match(r"!", temp_opl) and re.match(r"!", current_token):
                     token.append(("OP_L", temp_opl))
                     temp_opl = ""
@@ -263,6 +282,7 @@ def tokenizing(str_):
                     current_token = ""
 
                 else:
+                    # evaluasi operator logika
                     temp_opl+=current_token
                     if re.match("(\|\||&&)", temp_opl):
                         token.append(("OP_L", temp_opl))
@@ -277,6 +297,7 @@ def tokenizing(str_):
 
             elif not re.match(pat_opl, current_token) and num_zone == False and str_zone == False and opr_zone == False and opl_zone == True and opa_zone == False and ident_zone == False:
 
+                # evaluasi operator relasi khusus !=
                 if re.match(r"!", temp_opl) and re.match(r"=", current_token):
                     temp_opr += temp_opl + current_token
                     token.append(("OP_R", temp_opr))
@@ -294,31 +315,40 @@ def tokenizing(str_):
                     temp_opl = ""
                     opl_zone = False
 
+                # evaluasi string
                 if re.match(r"\"", current_token):
                     current_token = ""
                     str_zone = True
 
+                # evaluasi angka
                 if re.match(pat_angka,current_token):
                     temp_num += current_token
                     num_zone = True
 
+                # evaluasi identifier
                 if re.match(pat_al_ident_start,current_token):
                     temp_ident+=current_token
                     ident_zone = True
                     current_token = ""
 
+                # evaluasi operator aritmatik
                 if re.match(pat_opa,current_token):
                     temp_opa += current_token
                     opa_zone = True
 
+                if re.match(pat_opr, current_token):
+                    temp_opr+=current_token
+                    opr_zone = True
+
+                # evaluasi punctuasi
                 if re.match(pat_punc, current_token):
                     token.append(("PUNC", current_token))
 
                 current_token = ""
-            # evaluator operator relasi
 
+            # evaluator operator relasi
             elif re.match(pat_opr, current_token) and num_zone == False and str_zone == False and opr_zone == False and opl_zone == False and opa_zone == False and ident_zone == False:
-                temp_opr+=current_token
+                temp_opr += current_token
                 current_token = ""
                 opr_zone = True
 
