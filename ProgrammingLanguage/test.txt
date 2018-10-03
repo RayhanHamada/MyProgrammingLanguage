@@ -1,1 +1,1 @@
-!<
+IF 8 < 9 THEN PRINT 4
